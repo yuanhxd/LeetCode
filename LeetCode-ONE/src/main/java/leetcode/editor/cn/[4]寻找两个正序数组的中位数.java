@@ -40,18 +40,46 @@ package leetcode.editor.cn;
 // 
 // Related Topics 数组 二分查找 分治 👍 6087 👎 0
 
-class MedianOfTwoSortedArrays{
+class MedianOfTwoSortedArrays {
     public static void main(String[] args) {
         Solution solution = new MedianOfTwoSortedArrays().new Solution();
-        
+
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-        return 0.0f;
+    class Solution {
+        public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+            if (nums1.length > nums2.length ) {
+                return findMedianSortedArrays(nums2, nums1);
+            }
+
+            int m = nums1.length;
+            int n = nums2.length;
+
+            int left = 0, right = m;
+
+            int media1 = 0, media2 = 0;
+
+            while (left <= right) {
+                int i = (m + n + 1) / 2;
+                int j = (m + n + 1) / 2 - i;
+
+                int num1_t = i == 0 ? Integer.MIN_VALUE : nums1[i - 1];
+                int num1_i = i == m ? Integer.MAX_VALUE : nums1[i];
+                int num2_t = j == 0 ? Integer.MIN_VALUE : nums2[j - 1];
+                int num2_j = j == m ? Integer.MAX_VALUE : nums2[j];
+
+                if (num1_t <= num2_j) {
+                    media1 = Math.max(num1_t, num2_t);
+                    media2 = Math.min(num2_j, num1_i);
+                    left = i + 1;
+                } else {
+                    right = i - 1;
+                }
+            }
+            return (m + n) % 2 == 0 ? (media1 + media2) * 0.5 : media1;
+        }
     }
-}
 //leetcode submit region end(Prohibit modification and deletion)
 
 }
