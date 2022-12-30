@@ -53,18 +53,71 @@ package leetcode.editor.cn;
 // 
 //进阶：你能设计一个在 o(m+n) 时间内解决此问题的算法吗？ Related Topics 哈希表 字符串 滑动窗口 👍 2278 👎 0
 
-class MinimumWindowSubstring{
+class MinimumWindowSubstring {
     public static void main(String[] args) {
         Solution solution = new MinimumWindowSubstring().new Solution();
-        
+
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public String minWindow(String s, String t) {
+    class Solution {
+        public String minWindow(String s, String t) {
+            if (s == null || s.equals("") || t == null || t.equals("") || s.length() < t.length()) {
+                return "";
+            }
 
+            int[] need = new int[128];
+            int[] have = new int[128];
+
+            for (int i = 0; i < t.length(); i++) {
+                need[t.charAt(i)]++;
+            }
+
+            int left = 0, right = 0, min = s.length() + 1, start = 0, count = 0;
+
+            while (right < s.length()) {
+                char r = s.charAt(right);
+
+                if (need[r] == 0) {
+                    right++;
+                    continue;
+                }
+
+                if (need[r] > have[r]) {
+                    count++;
+                }
+
+                have[r]++;
+                right++;
+
+                while (count == t.length()) {
+
+                    if (right - left < min) {
+                        min = right - left;
+                        start = left;
+                    }
+
+                    char l = s.charAt(left);
+
+                    if (need[l] == 0) {
+                        left++;
+                        continue;
+                    }
+
+                    if (need[l] == have[l]) {
+                        count--;
+                    }
+
+                    have[l]--;
+                    left++;
+                }
+            }
+
+            if (min == s.length() + 1) return "";
+
+            return s.substring(start, start + min);
+        }
     }
-}
 //leetcode submit region end(Prohibit modification and deletion)
 
 }
