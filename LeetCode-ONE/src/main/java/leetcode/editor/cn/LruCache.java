@@ -60,7 +60,7 @@ import java.util.Map;
 
 class LruCache {
     public static void main(String[] args) {
-        Solution solution = new LruCache().new Solution();
+        Solution solution = new LruCache().new Solution(1);
 
     }
 
